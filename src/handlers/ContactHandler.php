@@ -39,15 +39,15 @@ class ContactHandler {
      */
     public function store():bool {
 
-        // Calculate frequency number of contact name
-        $this->processT9Numbers();
-
         // Check if phoneNumber already exist
         $phoneNumber = Db::table('contacts')->where('phoneNumber', '=', $this->phoneNumber)->first();
 
         if ($phoneNumber !== null ) {
             throw new Exception('Phone number already exists');
         }
+
+        // Calculate frequency number of contact name
+        $this->processT9Numbers();
 
         // Insert parameters in database
         return Db::table('contacts')->insert(
