@@ -19,28 +19,29 @@ class Trie {
 
     }
 
-    private function bridgeNodes(&$node, $fullName) {
+    private function bridgeNodes($node, $fullName) {
         $len = strlen($fullName);
+        $i = 0;
+        $test = '';
 
-        for($i = 0; $i < $len; $i++) {
+        for($i; $i < $len; $i++) {
             $letter = str_split($fullName)[$i];
             $thisKey = T9NumberProcessor::KEYS[$letter];
 
-            if(empty($node->children[$thisKey]) === false) {
+            if(array_key_exists($thisKey, $node->children) === true) {
                 $node = $node->children[$thisKey];
             } else {
                 break;
             }
         }
 
-        for($i = 0; $i < $len; $i++) {
+        for($i; $i < $len; $i++) {
             $letter = str_split($fullName)[$i];
             $thisKey = T9NumberProcessor::KEYS[$letter];
 
             $node->children[$thisKey] = new Trie();
 
             $node = $node->children[$thisKey];
-
         }
 
         return $node;
@@ -49,7 +50,7 @@ class Trie {
     private function insertFullNameToListByDigits(&$list, $fullName, $digits)
     {
         $fullNameToInsert = [$fullName, $digits];
-        $fullNameLength = strlen($fullName);
+        $fullNameLength = count($list);
 
         if ($fullNameLength === 0) {
             // Add name for the first time
@@ -79,7 +80,7 @@ class Trie {
         $node = $this;
 
         for ($i = 0; $i < strlen($key); $i++) {
-            $thisKey = $key[$i];
+            $thisKey = (int) str_split($key)[$i];
             $node = $node->children[$thisKey];
         }
 
@@ -90,28 +91,30 @@ class Trie {
         return $suggestionsDepth > 0 ? array_merge($result, $this->getDeeperSuggestions($node, $suggestionsDepth)) : $result;
     }
 
-    private function getDeeperSuggestions($node, int $maxDepth) {
+    private function getDeeperSuggestions(&$node, int $maxDepth) {
         $deepSuggestions = [];
         while(count($deepSuggestions) <  $maxDepth) {
             $deepSuggestions[] = [];
         }
 
-        $deepSuggestions = array_map(function($level) {
-            return usort($level, function($a, $b) {
-                return $a[1] - $b[1];
-            });
-        }, $deepSuggestions);
-
         $this->traverse($node, 0, $maxDepth, $deepSuggestions);
 
+        $deepSuggestions = array_map(function($level) {
+            usort($level, function($a, $b) {
+                return $a[1] - $b[1];
+            });
+            return $level;
+        }, $deepSuggestions);
+
         return array_reduce($deepSuggestions, function($result, $level) {
+            $level = $level;
             return array_merge($result, array_map(function($fullNameAndDigit){
                 return $fullNameAndDigit[0];
             }, $level));
         }, []);
     }
 
-    private function traverse($node, $depth, $maxDepth, $deepSuggestions) {
+    private function traverse(&$node, $depth, $maxDepth, &$deepSuggestions) {
 
         if ($depth <= $maxDepth && $depth !== 0) {
             $d = $depth - 1;
@@ -123,7 +126,7 @@ class Trie {
         }
 
         foreach($node->children as $childKey) {
-            $this->traverse($node->children[$childKey], $depth);
+            $this->traverse($childKey, $depth + 1, $maxDepth, $deepSuggestions);
         }
     }
 }

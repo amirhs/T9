@@ -7,6 +7,8 @@ use app\src\utility\T9NumberProcessor;
 use app\src\handlers\ContactHandler;
 use app\src\db\Db;
 
+include 'header.php';
+
 $errorMessage = '';
 $params = Params::getParams();
 

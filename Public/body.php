@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<body>
+<body style="background-color: #5b5b5b;">
 
 <?php if (isset($Message) === true): ?>
     <div>
@@ -22,6 +22,8 @@
             </td>
         </tr>
         <?php
+
+        echo $time_elapsed_secs;
         if (isset($results) === true) {
             foreach ($results as $result) {
                 echo '<tr>';
@@ -32,6 +34,16 @@
                 echo '</tr>';
             }
         }
+
+//        if (isset($results) === true) {
+//            foreach ($results as $result) {
+//                echo '<tr>';
+//                echo '<td>';
+//                echo $result . PHP_EOL;
+//                echo '</td>';
+//                echo '</tr>';
+//            }
+//        }
         ?>
 
     </table>

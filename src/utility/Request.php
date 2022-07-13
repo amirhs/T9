@@ -1,7 +1,7 @@
 <?php
 namespace app\src\utility;
 
-class Params {
+class Request {
 
     public static function getParams() {
 
