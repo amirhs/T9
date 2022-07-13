@@ -3,7 +3,7 @@ namespace app\src\utility;
 
 class T9NumberProcessor {
 
-    private string $fullname;
+    private string $fullName;
     private string $t9Number = '';
 
     // Simulate mobile keys
@@ -20,11 +20,11 @@ class T9NumberProcessor {
 
 
     /**
-     * @param string $fullname
+     * @param string $fullName
      * @return void
      */
-    public function setName(string $fullname):void {
-        $this->fullname = $fullname;
+    public function setName(string $fullName):void {
+        $this->fullName = $fullName;
     }
 
     /**
@@ -32,7 +32,7 @@ class T9NumberProcessor {
      */
     public function process():void {
 
-        $fullName_chars = str_split(strtolower($this->fullname));
+        $fullName_chars = str_split(strtolower($this->fullName));
 
         foreach($fullName_chars as $char) {
 

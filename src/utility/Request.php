@@ -3,7 +3,8 @@ namespace app\src\utility;
 
 class Request {
 
-    public static function getParams() {
+    public static function getParams(): array
+    {
 
         $params = [];
 

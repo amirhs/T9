@@ -2,7 +2,6 @@
 namespace app\src\handlers;
 
 use app\src\utility\T9NumberProcessor;
-use app\src\utility\Trie;
 use Exception;
 use Illuminate\Database\Capsule\Manager as Db;
 
@@ -49,15 +48,6 @@ class ContactHandler {
 
         // Calculate frequency number of contact name
         $this->processT9Numbers();
-
-        $trie = new Trie();
-
-        $redis = new \Predis\Client();
-        $trie = unserialize($redis->get('trie'));
-
-        $fullName = strtolower($this->name) . strtolower($this->family);
-        $trie->insert($fullName, (int) $this->t9Number);
-        $redis->set('trie', serialize($trie));
 
         // Insert parameters in database
         return Db::table('contacts')->insert(

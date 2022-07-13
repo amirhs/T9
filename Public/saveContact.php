@@ -2,15 +2,13 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use app\src\utility\Params;
+use app\src\utility\Request;
 use app\src\utility\T9NumberProcessor;
 use app\src\handlers\ContactHandler;
 use app\src\db\Db;
 
-include 'header.php';
-
 $errorMessage = '';
-$params = Params::getParams();
+$params = Request::getParams();
 
 // Check if one of the fields was empty
 if (
